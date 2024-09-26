@@ -1,5 +1,5 @@
 import { rmSync } from 'node:fs';
-import { daemonClient } from '../../daemon/client/client';
+
 import { cacheDir, workspaceDataDirectory } from '../../utils/cache-directory';
 import { output } from '../../utils/output';
 import { getNativeFileCacheLocation } from '../../native/native-file-cache-location';
@@ -66,7 +66,11 @@ export async function resetHandler(args: ResetCommandOptions) {
     }
   }
   if (all || args.onlyCloud) {
-    await resetCloudClient();
+    try {
+      await resetCloudClient();
+    } catch {
+      errors.push('Failed to reset the Nx Cloud client.');
+    }
   }
   if (errors.length > 0) {
     output.error({
@@ -81,7 +85,11 @@ export async function resetHandler(args: ResetCommandOptions) {
   }
 }
 
-function killDaemon() {
+async function killDaemon(): Promise<void> {
+  const { daemonClient } = await import('../../daemon/client/client');
+  if (!daemonClient.enabled) {
+    return;
+  }
   return daemonClient.stop();
 }
 
