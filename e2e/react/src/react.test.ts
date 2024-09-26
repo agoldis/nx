@@ -75,10 +75,10 @@ describe('React Applications', () => {
         `generate @nx/react:app apps/${appName} --style=css --bundler=webpack --no-interactive --skipFormat`
       );
       runCLI(
-        `generate @nx/react:lib libs${libName} --style=css --no-interactive --unit-test-runner=jest --skipFormat`
+        `generate @nx/react:lib libs/${libName} --style=css --no-interactive --unit-test-runner=jest --skipFormat`
       );
       runCLI(
-        `generate @nx/react:lib libs${libWithNoComponents} --no-interactive --no-component --unit-test-runner=jest --skipFormat`
+        `generate @nx/react:lib libs/${libWithNoComponents} --no-interactive --no-component --unit-test-runner=jest --skipFormat`
       );
 
       // Libs should not include package.json by default
